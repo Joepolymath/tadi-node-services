@@ -7,11 +7,9 @@ import logger from '../configs/logger.config';
 import App from '../index';
 // import AuthController from '../modules/auth/auth.controller';
 import { connectDb } from '../setup/database';
+import UserController from '../controllers/users.controllers';
 
-const app = new App();
-// [
-//   new AuthController(),
-// ]
+const app = new App([new UserController()]);
 
 const debug = debugLib('tadi-users:server');
 
