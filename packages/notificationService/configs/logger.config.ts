@@ -5,10 +5,10 @@ const logger = winston.createLogger({
   format: winston.format.json(),
   transports: [
     new winston.transports.File({
-      filename: 'logs/notification.error.log',
+      filename: 'logs/notfication.error.log',
       level: 'error',
     }),
-    new winston.transports.File({ filename: 'logs/notification.combined.log' }),
+    new winston.transports.File({ filename: 'logs/notfication.combined.log' }),
   ],
 });
 
