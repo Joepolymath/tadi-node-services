@@ -4,12 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:n": "nodemon packages/notificationService/bin/www.ts",
+    "dev:u": "nodemon packages/usersService/bin/www.ts",
+    "dev:p": "nodemon packages/proxy/bin/www.ts",
+    "build": "rimraf dist && tsc -p .",
+    "clean": "rimraf dist",
+    "start:n": "node dist/notificationService/bin/www.js",
+    "start:u": "node dist/usersService/bin/www.js",
+    "start:p": "node dist/proxy/bin/www.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "rimraf": "^5.0.5"
   }
 }
