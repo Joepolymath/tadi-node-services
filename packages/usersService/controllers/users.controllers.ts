@@ -13,6 +13,7 @@ export default class UserController implements Controller {
     this.router.get(`${this.path}/health`, (req: Request, res: Response) => {
       res.status(200).json({
         message: 'User service works',
+        status: true,
       });
     });
   }

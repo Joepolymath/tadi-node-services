@@ -12,6 +12,9 @@ notification:
 users:
 	pnpm dev:u
 
+proxy:
+	pnpm dev:p
+
 build1:
 	$(PACKAGE_MANAGER) build
 
