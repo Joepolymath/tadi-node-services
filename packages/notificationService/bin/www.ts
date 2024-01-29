@@ -13,7 +13,7 @@ const app = new App();
 //   new AuthController(),
 // ]
 
-const debug = debugLib('congreGate:server');
+const debug = debugLib('tadi-notification:server');
 
 connectDb();
 

@@ -6,7 +6,7 @@
   "scripts": {
     "dev:n": "nodemon packages/notificationService/bin/www.ts",
     "dev:u": "nodemon packages/usersService/bin/www.ts",
-    "dev:p": "nodemon packages/proxy/bin/www.ts",
+    "dev:p": "nodemon packages/proxy/index.ts",
     "build": "rimraf dist && tsc -p .",
     "clean": "rimraf dist",
     "start:n": "node dist/notificationService/bin/www.js",

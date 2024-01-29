@@ -10,4 +10,6 @@ export interface IEnv {
   NOTIFICATION_SERVICE_PORT: string;
   USER_SERVICE_PORT: string;
   PROXY_PORT: string;
+  USER_SERVICE_URL: string;
+  NOTIFICATION_SERVICE_URL: string;
 }
