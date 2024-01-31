@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import Controller from '../../shared/types/controller.types';
 import usersService from '../services/users.service';
 import HttpException from '../../shared/utils/exceptions/http.exceptions';
+import { IGetUsers } from '../types/user.types';
 
 export default class UserController implements Controller {
   public path: string = '/users';
@@ -22,6 +23,7 @@ export default class UserController implements Controller {
 
     this.router.post(`${this.path}`, this.signUp);
     this.router.post(`${this.path}/signin`, this.signIn);
+    this.router.get(`${this.path}`, this.getAll);
   }
 
   public async signUp(
@@ -46,6 +48,21 @@ export default class UserController implements Controller {
   ): Promise<Response | void> {
     try {
       const data = await usersService.signIn(req.body);
+      return res
+        .status(data.statusCode)
+        .json({ ...data, message: data.message });
+    } catch (error: any) {
+      next(new HttpException(500, error.message));
+    }
+  }
+
+  public async getAll(
+    req: Request<{}, {}, {}, IGetUsers>,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const data = await usersService.getAll(req.query);
       return res
         .status(data.statusCode)
         .json({ ...data, message: data.message });

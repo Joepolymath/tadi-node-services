@@ -16,6 +16,20 @@ export interface IUser extends Document {
   gender?: string;
   profilePicture?: string;
 }
+export interface IGetUsers {
+  _id?: string;
+  title?: string;
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  phone: string;
+  role?: string;
+  nationality?: string;
+  username?: string;
+  gender?: string;
+  skip?: number;
+  limit?: number;
+}
 
 export enum Role {
   ADMIN = 'admin',

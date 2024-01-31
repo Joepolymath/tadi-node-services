@@ -15,10 +15,12 @@ const userSchema = new mongoose.Schema<IUser>(
     email: {
       type: String,
       trim: true,
+      index: true,
     },
     phone: {
       type: String,
       trim: true,
+      index: true,
     },
     role: {
       type: String,
@@ -43,6 +45,7 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     username: {
       type: String,
+      index: true,
     },
     gender: {
       type: String,

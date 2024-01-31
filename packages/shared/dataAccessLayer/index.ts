@@ -20,7 +20,11 @@ class DAL<T extends Document> {
   }
 
   public async findAll(
-    query: FilterQuery<T>,
+    query: {
+      filter: FilterQuery<T>;
+      skip: number;
+      limit: number;
+    },
     populateData?: string[],
     selectData?: string
   ) {
@@ -30,10 +34,18 @@ class DAL<T extends Document> {
     if (!selectData) {
       selectData = '-__v';
     }
+
+    if (!query.skip || !query.limit) {
+      query.skip = 0;
+      query.limit = 0;
+    }
+
     return await this.model
-      .find(query)
+      .find(query.filter)
       .populate(populateData[0], populateData[1])
-      .select(selectData);
+      .select(selectData)
+      .skip(query.skip)
+      .limit(query.limit);
   }
 
   public async findOne(
@@ -63,6 +75,14 @@ class DAL<T extends Document> {
 
   public async findByIdAndDelete(id: Types.ObjectId) {
     return await this.model.findByIdAndDelete(id);
+  }
+
+  public async countDocs(query: FilterQuery<T>) {
+    return await this.model.countDocuments(query);
+  }
+
+  public async findById(_id: string) {
+    return await this.model.findById(_id);
   }
 }
 

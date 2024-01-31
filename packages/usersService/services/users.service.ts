@@ -3,7 +3,7 @@ import HttpException from '../../shared/utils/exceptions/http.exceptions';
 import responseUtils from '../../shared/utils/response.utils';
 import UserRepo from '../dataAccess';
 import usersModel from '../models/users.model';
-import { ILogin, IUser } from '../types/user.types';
+import { IGetUsers, ILogin, IUser } from '../types/user.types';
 import { generateToken } from '../utils/authTokens.utils';
 import bcrypt from '../utils/bcrypt';
 
@@ -64,6 +64,29 @@ class UserService {
           <string>foundUser.role
         ),
       },
+    });
+  }
+
+  public async getAll(query: IGetUsers) {
+    const pagination = {
+      skip: query.skip,
+      limit: query.limit,
+    };
+    delete query.limit;
+    delete query.skip;
+
+    const queryData = {
+      filter: query,
+      skip: pagination.skip || 0,
+      limit: pagination.limit || 0,
+    };
+    const foundUsers: IUser[] = await this.userRepo.findAll(queryData);
+    const totalUsers = await this.userRepo.countDocs(queryData.filter);
+    return responseUtils.buildResponse({
+      data: foundUsers,
+      count: totalUsers,
+      skip: queryData.skip,
+      limit: queryData.limit,
     });
   }
 }
