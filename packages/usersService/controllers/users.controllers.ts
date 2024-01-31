@@ -21,6 +21,7 @@ export default class UserController implements Controller {
     });
 
     this.router.post(`${this.path}`, this.signUp);
+    this.router.post(`${this.path}/signin`, this.signIn);
   }
 
   public async signUp(
@@ -30,6 +31,21 @@ export default class UserController implements Controller {
   ): Promise<Response | void> {
     try {
       const data = await usersService.signUp(req.body);
+      return res
+        .status(data.statusCode)
+        .json({ ...data, message: data.message });
+    } catch (error: any) {
+      next(new HttpException(500, error.message));
+    }
+  }
+
+  public async signIn(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const data = await usersService.signIn(req.body);
       return res
         .status(data.statusCode)
         .json({ ...data, message: data.message });

@@ -1,12 +1,12 @@
 import { Document } from 'mongoose';
 
 export interface IUser extends Document {
-  _id?: string;
+  _id: string;
   title?: string;
   firstName?: string;
   lastName?: string;
-  email?: string;
-  phone?: string;
+  email: string;
+  phone: string;
   password?: string;
   dateOfBirth?: Date | string;
   address?: string;
@@ -20,4 +20,10 @@ export interface IUser extends Document {
 export enum Role {
   ADMIN = 'admin',
   USER = 'user',
+}
+
+export interface ILogin {
+  email?: string;
+  phone?: string;
+  password: string;
 }
