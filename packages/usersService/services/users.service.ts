@@ -1,5 +1,6 @@
 import { BCRYPT_SALT } from '../../shared/configs/env.config';
 import HttpException from '../../shared/utils/exceptions/http.exceptions';
+import responseUtils from '../../shared/utils/response.utils';
 import UserRepo from '../dataAccess';
 import usersModel from '../models/users.model';
 import { IUser } from '../types/user.types';
@@ -27,6 +28,8 @@ class UserService {
     const userInstance = await this.userRepo.create(payload);
     const savedUser = await this.userRepo.save(userInstance);
 
-    // return responseUtils.buildResponse({ data: savedUser });
+    return responseUtils.buildResponse({ data: savedUser });
   }
 }
+
+export default new UserService();
