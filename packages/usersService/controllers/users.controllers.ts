@@ -6,10 +6,8 @@ import HttpException from '../../shared/utils/exceptions/http.exceptions';
 export default class UserController implements Controller {
   public path: string = '/users';
   public router: Router = Router();
-  private userServices: typeof usersService;
 
   constructor() {
-    this.userServices = usersService;
     this.loadRoutes();
   }
 
@@ -31,7 +29,7 @@ export default class UserController implements Controller {
     next: NextFunction
   ): Promise<Response | void> {
     try {
-      const data = await this.userServices.signUp(req.body);
+      const data = await usersService.signUp(req.body);
       return res
         .status(data.statusCode)
         .json({ ...data, message: data.message });
