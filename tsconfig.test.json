@@ -1,0 +1,10 @@
+// tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "types": ["mocha", "chai"]
+  },
+  "include": ["packages/**/*.ts", "test/**/*.ts", "packages/**/*.test.ts"],
+  "exclude": ["node_modules"]
+}

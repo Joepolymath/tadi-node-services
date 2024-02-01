@@ -1,1 +1,2 @@
-echo "TESTING HUSKY"
+echo "RUNNING HUSKY PRE-COMMIT"
+pnpm test
