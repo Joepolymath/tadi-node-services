@@ -89,6 +89,17 @@ class UserService {
       limit: queryData.limit,
     });
   }
+
+  public async getOne(query: IGetUsers) {
+    const foundUser = await this.userRepo.findOne(query);
+    if (!foundUser) {
+      return new HttpException(404, 'User not found');
+    }
+
+    return responseUtils.buildResponse({
+      data: foundUser,
+    });
+  }
 }
 
 export default new UserService();

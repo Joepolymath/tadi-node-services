@@ -81,8 +81,21 @@ class DAL<T extends Document> {
     return await this.model.countDocuments(query);
   }
 
-  public async findById(_id: string) {
-    return await this.model.findById(_id);
+  public async findById(
+    _id: string,
+    populateData?: string[],
+    selectData?: string
+  ) {
+    if (!populateData) {
+      populateData = ['', ''];
+    }
+    if (!selectData) {
+      selectData = '-__v';
+    }
+    return await this.model
+      .findById(_id)
+      .populate(populateData[0], populateData[1])
+      .select(selectData);
   }
 }
 
