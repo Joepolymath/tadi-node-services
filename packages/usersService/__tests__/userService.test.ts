@@ -50,13 +50,10 @@ describe('UserService', () => {
         profilePicture: 'https://example.com/profile.jpg',
       };
 
-      // const result = await UserService.signUp(<IUser>mockUser);
       const result = await UserService.signUp.call(
         userServiceWithMock,
         <IUser>mockUser
       );
-
-      console.log({ result });
 
       expect(result.data.firstName).toBe('Joshua');
       expect(result.data.lastName).toBe('Ajagbe');
@@ -69,25 +66,54 @@ describe('UserService', () => {
       expect(result.statusCode).toBe(200);
     });
 
-    // it('should return an error if user already exists', async () => {
-    //   // Mock findOne to return a user, simulating user already exists
-    //   jest.spyOn(MockUserRepo.prototype, 'findOne').mockResolvedValue({});
+    it('should return an error if user already exists', async () => {
+      // Mock findOne to return a user, simulating user already exists
+      const foundUser = {
+        title: 'Mr',
+        firstName: 'Joshua',
+        lastName: 'Ajagbe',
+        email: 'joshuaajagbe96@gmail.com',
+        phone: '08135860429',
+        password: 'testing',
+        dateOfBirth: '1996-08-26',
+        address: '123 Main St, City',
+        role: 'user',
+        nationality: 'US',
+        username: 'johndoe',
+        gender: 'male',
+        profilePicture: 'https://example.com/profile.jpg',
+      };
+      jest
+        .spyOn(MockUserRepo.prototype, 'findOne')
+        .mockResolvedValue(<IUser>foundUser);
 
-    //   const mockUser = {
-    //     firstName: 'John',
-    //     lastName: 'Doe',
-    //     email: 'john.doe@example.com',
-    //     phone: '1234567890',
-    //     password: 'password123',
-    //   };
+      const userServiceWithMock: UserServiceWithMock = {
+        userRepo: new MockUserRepo(),
+      };
 
-    //   const result = await UserService.signUp(mockUser);
+      const mockUser = {
+        title: 'Mr',
+        firstName: 'Joshua',
+        lastName: 'Ajagbe',
+        email: 'joshuaajagbe96@gmail.com',
+        phone: '08135860429',
+        password: 'testing',
+        dateOfBirth: '1996-08-26',
+        address: '123 Main St, City',
+        role: 'user',
+        nationality: 'US',
+        username: 'johndoe',
+        gender: 'male',
+        profilePicture: 'https://example.com/profile.jpg',
+      };
 
-    //   expect(result).toBeInstanceOf(HttpException);
-    //   expect(result.status).toBe(400);
-    //   expect(result.message).toBe('Phone or Email already exists');
-    // });
+      const result = await UserService.signUp.call(
+        userServiceWithMock,
+        <IUser>mockUser
+      );
+      console.log({ result });
+      expect(result).toHaveProperty('status', 'failure');
+      expect(result).toHaveProperty('message', 'Phone or Email already exists');
+    });
   });
-
-  // Add more tests for other methods in UserService
 });

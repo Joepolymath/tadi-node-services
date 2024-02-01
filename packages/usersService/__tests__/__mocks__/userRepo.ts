@@ -19,17 +19,14 @@ class MockUserRepo {
   }
 
   async save(user: IUser): Promise<IUser> {
-    // In a real application, you might not need to save the user in the mock.
     return user;
   }
 
   async findAll(query: any): Promise<IUser[]> {
-    // Simulate filtering based on query in a real scenario
     return this.data;
   }
 
   async countDocs(query: any): Promise<number> {
-    // Simulate counting based on query in a real scenario
     return this.data.length;
   }
 }
