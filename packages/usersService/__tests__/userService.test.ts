@@ -111,7 +111,6 @@ describe('UserService', () => {
         userServiceWithMock,
         <IUser>mockUser
       );
-      console.log({ result });
       expect(result).toHaveProperty('status', 'failure');
       expect(result).toHaveProperty('message', 'Phone or Email already exists');
     });
