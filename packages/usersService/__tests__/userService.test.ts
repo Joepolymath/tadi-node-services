@@ -1,0 +1,93 @@
+// __tests__/userService.test.ts
+import UserService from '../services/users.service';
+import HttpException from '../../shared/utils/exceptions/http.exceptions';
+import MockUserRepo from './__mocks__/userRepo';
+import bcrypt from '../utils/bcrypt';
+import { IUser } from '../types/user.types';
+
+jest.mock('../dataAccess');
+
+jest.mock('../utils/bcrypt', () => ({
+  generateSalt: jest.fn(),
+  hashPassword: jest.fn(),
+}));
+
+interface UserServiceWithMock {
+  userRepo: MockUserRepo; // Add any other properties/methods if needed
+}
+
+describe('UserService', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('signUp', () => {
+    it('should sign up a user successfully', async () => {
+      // Mock findOne to return null, simulating no user found
+      jest.spyOn(MockUserRepo.prototype, 'findOne').mockResolvedValue(null);
+
+      // Mock bcrypt functions
+      jest.spyOn(bcrypt, 'generateSalt').mockResolvedValue('mockedSalt');
+      jest.spyOn(bcrypt, 'hashPassword').mockResolvedValue('hashedPassword');
+
+      const userServiceWithMock: UserServiceWithMock = {
+        userRepo: new MockUserRepo(),
+      };
+
+      const mockUser = {
+        title: 'Mr',
+        firstName: 'Joshua',
+        lastName: 'Ajagbe',
+        email: 'joshuaajagbe96@gmail.com',
+        phone: '08135860429',
+        password: 'testing',
+        dateOfBirth: '1996-08-26',
+        address: '123 Main St, City',
+        role: 'user',
+        nationality: 'US',
+        username: 'johndoe',
+        gender: 'male',
+        profilePicture: 'https://example.com/profile.jpg',
+      };
+
+      // const result = await UserService.signUp(<IUser>mockUser);
+      const result = await UserService.signUp.call(
+        userServiceWithMock,
+        <IUser>mockUser
+      );
+
+      console.log({ result });
+
+      expect(result.data.firstName).toBe('Joshua');
+      expect(result.data.lastName).toBe('Ajagbe');
+      expect(result.data.email).toBe('joshuaajagbe96@gmail.com');
+      expect(result.data.phone).toBe('08135860429');
+      expect(result.data.accessToken).toBeUndefined();
+      expect(bcrypt.generateSalt).toHaveBeenCalledWith(expect.any(Number));
+      expect(bcrypt.hashPassword).toHaveBeenCalledWith('testing', 'mockedSalt');
+      expect(result.status).toBe('success');
+      expect(result.statusCode).toBe(200);
+    });
+
+    // it('should return an error if user already exists', async () => {
+    //   // Mock findOne to return a user, simulating user already exists
+    //   jest.spyOn(MockUserRepo.prototype, 'findOne').mockResolvedValue({});
+
+    //   const mockUser = {
+    //     firstName: 'John',
+    //     lastName: 'Doe',
+    //     email: 'john.doe@example.com',
+    //     phone: '1234567890',
+    //     password: 'password123',
+    //   };
+
+    //   const result = await UserService.signUp(mockUser);
+
+    //   expect(result).toBeInstanceOf(HttpException);
+    //   expect(result.status).toBe(400);
+    //   expect(result.message).toBe('Phone or Email already exists');
+    // });
+  });
+
+  // Add more tests for other methods in UserService
+});
