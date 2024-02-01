@@ -11,7 +11,8 @@
     "clean": "rimraf dist",
     "start:n": "node dist/notificationService/bin/www.js",
     "start:u": "node dist/usersService/bin/www.js",
-    "start:p": "node dist/proxy/index.js"
+    "start:p": "node dist/proxy/index.js",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
