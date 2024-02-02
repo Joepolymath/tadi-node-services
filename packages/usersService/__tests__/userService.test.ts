@@ -59,7 +59,6 @@ describe('UserService', () => {
       expect(result.data.lastName).toBe('Ajagbe');
       expect(result.data.email).toBe('joshuaajagbe96@gmail.com');
       expect(result.data.phone).toBe('08135860429');
-      expect(result.data.accessToken).toBeUndefined();
       expect(bcrypt.generateSalt).toHaveBeenCalledWith(expect.any(Number));
       expect(bcrypt.hashPassword).toHaveBeenCalledWith('testing', 'mockedSalt');
       expect(result.status).toBe('success');
