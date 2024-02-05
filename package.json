@@ -21,6 +21,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/amqplib": "^0.10.4",
     "@types/bcrypt": "^5.0.2",
     "@types/bluebird": "^3.5.42",
     "@types/chai": "^4.3.11",
@@ -48,6 +49,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "amqplib": "^0.10.3",
     "bcrypt": "^5.1.1",
     "colors": "^1.4.0",
     "debug": "^4.3.4",
