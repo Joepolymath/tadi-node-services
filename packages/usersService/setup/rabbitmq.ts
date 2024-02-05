@@ -4,7 +4,7 @@ interface RabbitMQConfig {
   url: string;
 }
 
-export async function createRabbitMQConnection(
+export async function connectRabbitMQ(
   config: RabbitMQConfig
 ): Promise<{ connection: Connection; channel: Channel }> {
   try {

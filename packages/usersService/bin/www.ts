@@ -2,18 +2,25 @@ require('module-alias/register');
 import http from 'http';
 import debugLib from 'debug';
 import 'module-alias';
-import { USER_SERVICE_PORT } from '../../shared/configs/env.config';
+import {
+  RABBITMQ_URI,
+  USER_SERVICE_PORT,
+} from '../../shared/configs/env.config';
 import logger from '../configs/logger.config';
 import App from '../index';
 // import AuthController from '../modules/auth/auth.controller';
 import { connectDb } from '../setup/database';
 import UserController from '../controllers/users.controllers';
+import { connectRabbitMQ } from '../setup/rabbitmq';
 
 const app = new App([new UserController()]);
 
 const debug = debugLib('tadi-users:server');
-
+const rabbitMQConfig = {
+  url: RABBITMQ_URI,
+};
 connectDb();
+connectRabbitMQ(rabbitMQConfig);
 
 const server = http.createServer(app.app);
 // Get port from environment and store in express

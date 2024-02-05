@@ -18,4 +18,5 @@ export const {
   USER_SERVICE_PORT,
   NOTIFICATION_SERVICE_URL,
   USER_SERVICE_URL,
+  RABBITMQ_URI,
 }: IEnv = process.env;
