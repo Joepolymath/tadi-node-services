@@ -4,12 +4,18 @@ import HttpException from '../../shared/utils/exceptions/http.exceptions';
 import MockUserRepo from './__mocks__/userRepo';
 import bcrypt from '../utils/bcrypt';
 import { IUser } from '../types/user.types';
+import pubSub from '../subscribers/users';
 
 jest.mock('../dataAccess');
 
 jest.mock('../utils/bcrypt', () => ({
   generateSalt: jest.fn(),
   hashPassword: jest.fn(),
+}));
+
+// At the top of your test file
+jest.mock('../subscribers/users', () => ({
+  emit: jest.fn(),
 }));
 
 interface UserServiceWithMock {
@@ -63,6 +69,14 @@ describe('UserService', () => {
       expect(bcrypt.hashPassword).toHaveBeenCalledWith('testing', 'mockedSalt');
       expect(result.status).toBe('success');
       expect(result.statusCode).toBe(200);
+      // ... inside your test
+
+      // Check if pubSub.emit was called
+      expect(pubSub.emit).toHaveBeenCalledWith(
+        'user_created',
+        expect.any(String)
+        // expect.any(Function)
+      );
     });
 
     it('should return an error if user already exists', async () => {

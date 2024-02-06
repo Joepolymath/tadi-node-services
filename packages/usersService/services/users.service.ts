@@ -29,7 +29,7 @@ class UserService {
 
     const userInstance = await this.userRepo.create(payload);
     const savedUser: any = await this.userRepo.save(userInstance);
-    // pubSub.emit('user_created', JSON.stringify(savedUser));
+    pubSub.emit('user_created', JSON.stringify(savedUser));
     return responseUtils.buildResponse({ data: savedUser });
   }
 
