@@ -46,15 +46,20 @@ export default class RabbitMQ {
     return this.channel;
   }
 
-  public assertQueue(queue: string) {
-    this.channel?.assertQueue(queue, {
+  public async assertQueue(queue: string) {
+    await this.channel?.assertQueue(queue, {
       durable: false,
     });
+    logger.info('QUEUE ASSERTED');
   }
 
-  public sendToQueue(queue: string, message: Buffer) {
-    this.channel?.sendToQueue(queue, message);
+  public async sendToQueue(queue: string, message: Buffer) {
+    await this.channel?.sendToQueue(queue, message);
     logger.info('Message sent to queue');
+  }
+
+  public closeConn() {
+    this.connection?.close();
   }
 }
 

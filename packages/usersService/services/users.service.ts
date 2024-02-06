@@ -3,6 +3,7 @@ import HttpException from '../../shared/utils/exceptions/http.exceptions';
 import responseUtils from '../../shared/utils/response.utils';
 import UserRepo from '../dataAccess';
 import usersModel from '../models/users.model';
+import pubSub from '../subscribers/users';
 import { IGetUsers, ILogin, IUser } from '../types/user.types';
 import { generateToken } from '../utils/authTokens.utils';
 import bcrypt from '../utils/bcrypt';
@@ -27,8 +28,8 @@ class UserService {
     payload.password = hashedPassword;
 
     const userInstance = await this.userRepo.create(payload);
-    const savedUser = await this.userRepo.save(userInstance);
-
+    const savedUser: any = await this.userRepo.save(userInstance);
+    // pubSub.emit('user_created', JSON.stringify(savedUser));
     return responseUtils.buildResponse({ data: savedUser });
   }
 

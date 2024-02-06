@@ -8,12 +8,9 @@ import {
 } from '../../shared/configs/env.config';
 import logger from '../configs/logger.config';
 import App from '../index';
-// import AuthController from '../modules/auth/auth.controller';
 import { connectDb } from '../setup/database';
 import UserController from '../controllers/users.controllers';
-// import { connectRabbitMQ } from '../setup/rabbitmq';
 import RabbitMQ from '../setup/rabbitmq';
-import { Channel, Connection } from 'amqplib';
 
 const app = new App([new UserController()]);
 
@@ -23,18 +20,8 @@ const rabbitMQConfig = {
   url: RABBITMQ_URI,
 };
 
-let rabbitmq: {
-  connection: Connection;
-  channel: Channel;
-};
-
 connectDb();
 export const rabbitMQInstance = new RabbitMQ(rabbitMQConfig);
-// (async function () {
-//   rabbitmq = await connectRabbitMQ(rabbitMQConfig);
-// })();
-
-// export const rabbitmqConnection = rabbitmq;
 
 const server = http.createServer(app.app);
 // Get port from environment and store in express
@@ -83,6 +70,12 @@ function onError(error: { syscall: string; code: any }) {
   }
 }
 
+function onClose() {
+  logger.warn('Server Closing');
+  rabbitMQInstance.closeConn();
+  process.exit(1);
+}
+
 server.listen(port, () => {
   logger.info(
     `Server actively eavesdropping 👂 👂 👂 👂 @port: ${USER_SERVICE_PORT}`
@@ -92,3 +85,4 @@ server.listen(port, () => {
 
 server.on('listening', onListening);
 server.on('error', onError);
+server.on('close', onClose);
