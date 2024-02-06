@@ -75,7 +75,6 @@ describe('UserService', () => {
       expect(pubSub.emit).toHaveBeenCalledWith(
         'user_created',
         expect.any(String)
-        // expect.any(Function)
       );
     });
 
