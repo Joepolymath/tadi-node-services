@@ -11,16 +11,30 @@ import App from '../index';
 // import AuthController from '../modules/auth/auth.controller';
 import { connectDb } from '../setup/database';
 import UserController from '../controllers/users.controllers';
-import { connectRabbitMQ } from '../setup/rabbitmq';
+// import { connectRabbitMQ } from '../setup/rabbitmq';
+import RabbitMQ from '../setup/rabbitmq';
+import { Channel, Connection } from 'amqplib';
 
 const app = new App([new UserController()]);
 
 const debug = debugLib('tadi-users:server');
+
 const rabbitMQConfig = {
   url: RABBITMQ_URI,
 };
+
+let rabbitmq: {
+  connection: Connection;
+  channel: Channel;
+};
+
 connectDb();
-connectRabbitMQ(rabbitMQConfig);
+export const rabbitMQInstance = new RabbitMQ(rabbitMQConfig);
+// (async function () {
+//   rabbitmq = await connectRabbitMQ(rabbitMQConfig);
+// })();
+
+// export const rabbitmqConnection = rabbitmq;
 
 const server = http.createServer(app.app);
 // Get port from environment and store in express
