@@ -51,6 +51,7 @@ class UserService {
     if (!passwordFound) {
       return new HttpException(400, 'Password Incorrect!');
     }
+    pubSub.emit('user_login', JSON.stringify(foundUser));
 
     return responseUtils.buildResponse({
       message: 'Login Successful',

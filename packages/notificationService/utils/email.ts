@@ -12,6 +12,7 @@ export default class EmailService {
   constructor(apiKey: string, service: string) {
     this.APIKEY = apiKey;
     this.service = service;
+    sg.setApiKey(this.APIKEY);
   }
 
   public async send(mailObj: IEmailMessage) {
@@ -19,6 +20,7 @@ export default class EmailService {
     switch (this.service) {
       case EmailServices.SENDGRID:
         const sgResponse = await sg.send(<MailDataRequired>mailObj, false);
+        console.log({ sgResponse });
         return sgResponse;
 
       default:
@@ -27,7 +29,7 @@ export default class EmailService {
   }
 
   public loadTemplate = (templateName: string, context: any) => {
-    const dir = path.resolve(__dirname, '../../email-templates', templateName);
+    const dir = path.resolve(__dirname, '../email-templates', templateName);
     const email = new Email({
       views: {
         options: {

@@ -76,11 +76,17 @@ function onClose() {
   process.exit(1);
 }
 
+process.on('exit', (code) => {
+  logger.warn('Server Closing');
+  rabbitMQInstance.closeConn();
+});
+
 server.listen(port, () => {
   logger.info(
     `Server actively eavesdropping 👂 👂 👂 👂 @port: ${USER_SERVICE_PORT}`
       .green.bold
   );
+  logger.info(`PROCESS ID: ${process.pid}`);
 });
 
 server.on('listening', onListening);
