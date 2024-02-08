@@ -33,6 +33,7 @@ export default class UserController implements Controller {
     next: NextFunction
   ): Promise<Response | void> {
     try {
+      req.body.knownIps = [req.userIpAddress];
       const data = await usersService.signUp(req.body);
       return res
         .status(data.statusCode)
@@ -48,6 +49,7 @@ export default class UserController implements Controller {
     next: NextFunction
   ): Promise<Response | void> {
     try {
+      req.body.ip = req.userIpAddress;
       const data = await usersService.signIn(req.body);
       return res
         .status(data.statusCode)

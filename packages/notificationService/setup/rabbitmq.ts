@@ -4,7 +4,7 @@ import { Queues } from '../../shared/enums/queues';
 import EmailService from '../utils/email';
 import { SENDGRIDAPIKEY } from '../../shared/configs/env.config';
 import { EmailServices, IEmailMessage } from '../../shared/types/email.types';
-import { signInEmail } from '../services/signIn';
+import { flaggedSignInEmail, signInEmail } from '../services/signIn';
 import { signUpEmail } from '../services/signup';
 
 interface RabbitMQConfig {
@@ -71,6 +71,9 @@ class RabbitMQ {
             break;
           case Queues.SIGNUP:
             await signUpEmail(messageObj);
+            break;
+          case Queues['FLAGGED-SIGNIN']:
+            await flaggedSignInEmail(messageObj);
             break;
           default:
             break;

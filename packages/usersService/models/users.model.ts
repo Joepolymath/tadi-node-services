@@ -50,6 +50,8 @@ const userSchema = new mongoose.Schema<IUser>(
     gender: {
       type: String,
     },
+    knownIps: [String],
+    flaggedIp: String,
   },
   {
     timestamps: true,

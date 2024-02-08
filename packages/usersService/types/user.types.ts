@@ -15,6 +15,8 @@ export interface IUser extends Document {
   username?: string;
   gender?: string;
   profilePicture?: string;
+  knownIps?: string[];
+  flaggedIp: string;
 }
 export interface IGetUsers {
   _id?: string;
@@ -40,4 +42,5 @@ export interface ILogin {
   email?: string;
   phone?: string;
   password: string;
+  ip?: string;
 }

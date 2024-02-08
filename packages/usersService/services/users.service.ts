@@ -34,6 +34,7 @@ class UserService {
   }
 
   public async signIn(payload: ILogin) {
+    console.log({ ip: payload.ip });
     const foundUser = await this.userRepo.findOne({
       $or: [{ phone: payload.phone }, { email: payload.email }],
     });
@@ -48,10 +49,22 @@ class UserService {
     if (!passwordFound) {
       return new HttpException(400, 'Password Incorrect!');
     }
-    if (!passwordFound) {
-      return new HttpException(400, 'Password Incorrect!');
+
+    // validate ip address
+    if (
+      foundUser.knownIps &&
+      foundUser.knownIps?.length > 0 &&
+      !foundUser.knownIps.includes(<string>payload.ip)
+    ) {
+      // flag the ip address
+      await this.userRepo.findAndUpdate(
+        { _id: foundUser._id },
+        { flaggedIp: payload.ip }
+      );
+      pubSub.emit('user_flagged', JSON.stringify(foundUser));
+    } else {
+      pubSub.emit('user_login', JSON.stringify(foundUser));
     }
-    pubSub.emit('user_login', JSON.stringify(foundUser));
 
     return responseUtils.buildResponse({
       message: 'Login Successful',
