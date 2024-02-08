@@ -2,7 +2,7 @@ import path from 'path';
 import sg, { MailDataRequired } from '@sendgrid/mail';
 import Email from 'email-templates';
 import previewEmail from 'preview-email';
-import { MAILER_FROM_OPTION } from '../../shared/configs/env.config';
+import { MAILER_FROM_OPTION, NODE_ENV } from '../../shared/configs/env.config';
 import { EmailServices, IEmailMessage } from '../../shared/types/email.types';
 
 export default class EmailService {
@@ -44,7 +44,8 @@ export default class EmailService {
           ...context,
         })
         .then((template) => {
-          previewEmail(template).then(console.log).catch(console.error); //preview email in browser, comment in production
+          NODE_ENV === 'development' &&
+            previewEmail(template).then(console.log).catch(console.error); //preview email in browser, comment in production
           resolve(template);
         })
         .catch((err) => {

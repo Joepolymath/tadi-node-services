@@ -4,6 +4,8 @@ import { Queues } from '../../shared/enums/queues';
 import EmailService from '../utils/email';
 import { SENDGRIDAPIKEY } from '../../shared/configs/env.config';
 import { EmailServices, IEmailMessage } from '../../shared/types/email.types';
+import { signInEmail } from '../services/signIn';
+import { signUpEmail } from '../services/signup';
 
 interface RabbitMQConfig {
   url: string;
@@ -65,21 +67,10 @@ class RabbitMQ {
         //   Handle the messages here...
         switch (queue) {
           case Queues.SIGNIN:
-            const emailService = new EmailService(
-              SENDGRIDAPIKEY,
-              EmailServices.SENDGRID
-            );
-            const msg: IEmailMessage = {
-              to: messageObj.email,
-              subject: 'NEW LOGIN ALERT',
-              html: `<h1>Someone Just Logged In</h1>
-						<h3>Was that you?</h3>
-						<p>Please reset your password if that was not you. Or reach out to our customer service at customers@tadi.com</p>
-					`,
-            };
-            await emailService.send(msg);
+            await signInEmail(messageObj);
             break;
           case Queues.SIGNUP:
+            await signUpEmail(messageObj);
             break;
           default:
             break;

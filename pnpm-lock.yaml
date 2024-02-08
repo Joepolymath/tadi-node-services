@@ -19,13 +19,16 @@ dependencies:
     version: 1.4.0
   debug:
     specifier: ^4.3.4
-    version: 4.3.4(supports-color@5.5.0)
+    version: 4.3.4(supports-color@8.1.1)
   dotenv:
     specifier: ^16.4.1
     version: 16.4.1
+  ejs:
+    specifier: ^3.1.9
+    version: 3.1.9
   email-templates:
     specifier: ^11.1.1
-    version: 11.1.1(@babel/core@7.23.9)(underscore@1.13.6)
+    version: 11.1.1(@babel/core@7.23.9)(ejs@3.1.9)(underscore@1.13.6)
   envalid:
     specifier: ^8.0.0
     version: 8.0.0
@@ -775,7 +778,7 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.15
     dev: true
 
-  /@ladjs/consolidate@1.0.3(@babel/core@7.23.9)(lodash@4.17.21)(underscore@1.13.6):
+  /@ladjs/consolidate@1.0.3(@babel/core@7.23.9)(ejs@3.1.9)(lodash@4.17.21)(underscore@1.13.6):
     resolution: {integrity: sha512-zyUeV5nkEFz7FH88pz+moVeMMOygTx1zL5bjXGHCVX5MMpmAtFf5piaQlBDk3nClGoUs8vjYI9TKsbXldGv0VA==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -926,6 +929,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.23.9
+      ejs: 3.1.9
       lodash: 4.17.21
       underscore: 1.13.6
     dev: false
@@ -1840,7 +1844,6 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
-    dev: true
 
   /char-regex@1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
@@ -2166,6 +2169,7 @@ packages:
     dependencies:
       ms: 2.1.2
       supports-color: 5.5.0
+    dev: true
 
   /debug@4.3.4(supports-color@8.1.1):
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
@@ -2178,7 +2182,6 @@ packages:
     dependencies:
       ms: 2.1.2
       supports-color: 8.1.1
-    dev: true
 
   /decamelize@4.0.0:
     resolution: {integrity: sha512-9iE1PgSik9HeIIw2JO94IidnE3eBoQrFJ3w7sFuzSX4DpmZ3v5sZpUiV5Swcf6mQEF+Y0ru8Neo+p+nyh2J+hQ==}
@@ -2363,14 +2366,22 @@ packages:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
     dev: false
 
+  /ejs@3.1.9:
+    resolution: {integrity: sha512-rC+QVNMJWv+MtPgkt0y+0rVEIdbtxVADApW9JXrUVlzHetgcyczP/E7DJmWJ4fJCZF2cPcBk0laWO9ZHMG3DmQ==}
+    engines: {node: '>=0.10.0'}
+    hasBin: true
+    dependencies:
+      jake: 10.8.7
+    dev: false
+
   /electron-to-chromium@1.4.653:
     resolution: {integrity: sha512-wA2A2LQCqnEwQAvwADQq3KpMpNwgAUBnRmrFgRzHnPhbQUFArTR32Ab46f4p0MovDLcg4uqd4nCsN2hTltslpA==}
 
-  /email-templates@11.1.1(@babel/core@7.23.9)(underscore@1.13.6):
+  /email-templates@11.1.1(@babel/core@7.23.9)(ejs@3.1.9)(underscore@1.13.6):
     resolution: {integrity: sha512-MEf/KlM/FokY7Hy3MBLZI5S4lOna0a2SX0tVzKc+VWSIc5/dq19wDkRVl28RgWtKK0Dfb+Z0iqbuk2BnIRfyDg==}
     engines: {node: '>=14'}
     dependencies:
-      '@ladjs/consolidate': 1.0.3(@babel/core@7.23.9)(lodash@4.17.21)(underscore@1.13.6)
+      '@ladjs/consolidate': 1.0.3(@babel/core@7.23.9)(ejs@3.1.9)(lodash@4.17.21)(underscore@1.13.6)
       '@ladjs/i18n': 8.0.3
       get-paths: 0.0.7
       html-to-text: 9.0.5
@@ -2644,6 +2655,12 @@ packages:
 
   /fecha@4.2.3:
     resolution: {integrity: sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==}
+    dev: false
+
+  /filelist@1.0.4:
+    resolution: {integrity: sha512-w1cEuf3S+DrLCQL7ET6kz+gmlJdbq9J7yXCSjK/OZCPA+qEN1WyF4ZAf0YYJa4/shHJra2t/d/r8SV4Ji+x+8Q==}
+    dependencies:
+      minimatch: 5.0.1
     dev: false
 
   /fill-range@7.0.1:
@@ -3284,6 +3301,17 @@ packages:
       '@isaacs/cliui': 8.0.2
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
+    dev: false
+
+  /jake@10.8.7:
+    resolution: {integrity: sha512-ZDi3aP+fG/LchyBzUM804VjddnwfSfsdeYkwt8NcbKRvo4rFkjhs456iLFn3k2ZUWvNe4i48WACDbza8fhq2+w==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      async: 3.2.5
+      chalk: 4.1.2
+      filelist: 1.0.4
+      minimatch: 3.1.2
     dev: false
 
   /jest-changed-files@29.7.0:
@@ -4089,7 +4117,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       brace-expansion: 2.0.1
-    dev: true
 
   /minimatch@9.0.3:
     resolution: {integrity: sha512-RHiac9mvaRw0x3AYRgDC1CxAP7HTcNrrECeA8YYJeWnpo+2Q5CegtZjaotWTWxDG3UeGA1coE05iH1mPjT/2mg==}
@@ -5264,7 +5291,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       has-flag: 4.0.0
-    dev: true
 
   /supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
