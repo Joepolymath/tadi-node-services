@@ -49,6 +49,28 @@ function deserialize_UserRegistrationResponse(buffer_arg) {
   return users_pb.UserRegistrationResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_VerifyAuthRequest(arg) {
+  if (!(arg instanceof users_pb.VerifyAuthRequest)) {
+    throw new Error('Expected argument of type VerifyAuthRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_VerifyAuthRequest(buffer_arg) {
+  return users_pb.VerifyAuthRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_VerifyAuthResponse(arg) {
+  if (!(arg instanceof users_pb.VerifyAuthResponse)) {
+    throw new Error('Expected argument of type VerifyAuthResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_VerifyAuthResponse(buffer_arg) {
+  return users_pb.VerifyAuthResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 
 var UserServiceService = exports.UserServiceService = {
   registerUser: {
@@ -72,6 +94,17 @@ var UserServiceService = exports.UserServiceService = {
     requestDeserialize: deserialize_LoginRequest,
     responseSerialize: serialize_LoginResponse,
     responseDeserialize: deserialize_LoginResponse,
+  },
+  verifyAuth: {
+    path: '/UserService/VerifyAuth',
+    requestStream: false,
+    responseStream: false,
+    requestType: users_pb.VerifyAuthRequest,
+    responseType: users_pb.VerifyAuthResponse,
+    requestSerialize: serialize_VerifyAuthRequest,
+    requestDeserialize: deserialize_VerifyAuthRequest,
+    responseSerialize: serialize_VerifyAuthResponse,
+    responseDeserialize: deserialize_VerifyAuthResponse,
   },
 };
 

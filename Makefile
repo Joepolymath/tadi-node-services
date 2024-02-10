@@ -2,6 +2,7 @@
 SRC_DIR = src
 OBJ_DIR = build
 PACKAGE_MANAGER = yarn
+NPM_BIN = /Users/equallyai/Documents/Projects/tadi/tadi-node-services/node_modules/.bin
 
 # Targets
 all: $(EXECUTABLE)
@@ -14,6 +15,9 @@ users:
 
 proxy:
 	pnpm dev:p
+
+grpc:
+	npx grpc_tools_node_protoc --plugin=protoc-gen-ts=$(NPM_BIN)/protoc-gen-ts --ts_out=service=grpc-node:./packages/grpc --js_out=import_style=commonjs,binary:./packages/grpc --grpc_out=./packages/grpc ./users.proto
 
 build1:
 	$(PACKAGE_MANAGER) build
