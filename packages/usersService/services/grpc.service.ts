@@ -31,3 +31,5 @@ class UserServiceImpl extends UnimplementedUserServiceService {
     throw new Error('Method not implemented.');
   }
 }
+
+export default UserServiceImpl;

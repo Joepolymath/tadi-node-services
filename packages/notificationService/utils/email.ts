@@ -44,8 +44,8 @@ export default class EmailService {
           ...context,
         })
         .then((template) => {
-          NODE_ENV === 'development' &&
-            previewEmail(template).then(console.log).catch(console.error); //preview email in browser, comment in production
+          // NODE_ENV === 'development' &&
+          //   previewEmail(template).then(console.log).catch(console.error); //preview email in browser, comment in production
           resolve(template);
         })
         .catch((err) => {

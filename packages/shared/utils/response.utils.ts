@@ -35,9 +35,9 @@ class ResponseUtils {
     data: any = null
   ) {
     if (data == null) {
-      return res.status(403).json({ status: 'failure', message });
+      return res.status(401).json({ status: 'failure', message });
     }
-    return res.status(403).json({ message, status: 'failure', data });
+    return res.status(401).json({ message, status: 'failure', data });
   }
 
   //   for bad requests

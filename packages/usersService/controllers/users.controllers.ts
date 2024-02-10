@@ -3,6 +3,8 @@ import Controller from '../../shared/types/controller.types';
 import usersService from '../services/users.service';
 import HttpException from '../../shared/utils/exceptions/http.exceptions';
 import { IGetUsers } from '../types/user.types';
+import { getToken } from '../utils/getToken';
+import { verifyApiKey } from '../middlewares/apiKey';
 
 export default class UserController implements Controller {
   public path: string = '/users';
@@ -25,6 +27,11 @@ export default class UserController implements Controller {
     this.router.post(`${this.path}/signin`, this.signIn);
     this.router.get(`${this.path}`, this.getAll);
     this.router.get(`${this.path}/getOne`, this.getOne);
+    this.router.get(
+      `${this.path}/auth-check`,
+      verifyApiKey,
+      this.authenticateService
+    );
   }
 
   public async signUp(
@@ -86,6 +93,32 @@ export default class UserController implements Controller {
         .json({ ...data, message: data.message });
     } catch (error: any) {
       next(new HttpException(500, error.message));
+    }
+  }
+
+  public async authenticateService(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const token = getToken(req.headers.authorization as string);
+      console.log({ token });
+      if (!token) {
+        return res.status(403).json({
+          messsage: 'Please provide authorization token',
+          status: 'failure',
+        });
+      }
+      const data = await usersService.authenticate(token);
+      return res
+        .status(data.statusCode)
+        .json({ ...data, message: data.message });
+    } catch (error: any) {
+      return res.status(error.statusCode || 500).json({
+        message: error?.message,
+        status: 'failure',
+      });
     }
   }
 }

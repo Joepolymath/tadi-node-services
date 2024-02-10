@@ -6,3 +6,7 @@ export const generateToken = (id: string, email: string, role: string) => {
     expiresIn: '30d',
   });
 };
+
+export const decodeToken = (token: string) => {
+  return jwt.verify(token, JWT_SECRET);
+};

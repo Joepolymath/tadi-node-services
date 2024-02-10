@@ -5,7 +5,7 @@ import UserRepo from '../dataAccess';
 import usersModel from '../models/users.model';
 import pubSub from '../subscribers/users';
 import { IGetUsers, ILogin, IUser } from '../types/user.types';
-import { generateToken } from '../utils/authTokens.utils';
+import { decodeToken, generateToken } from '../utils/authTokens.utils';
 import bcrypt from '../utils/bcrypt';
 
 class UserService {
@@ -114,6 +114,21 @@ class UserService {
     return responseUtils.buildResponse({
       data: foundUser,
     });
+  }
+
+  public async authenticate(token: string) {
+    try {
+      const decoded: any = decodeToken(token);
+      const foundUser: IUser | null = await this.userRepo.findById(decoded.id);
+      if (!foundUser) {
+        throw new HttpException(403, 'Invalid Token: User not Found');
+      }
+      return responseUtils.buildResponse({
+        data: foundUser,
+      });
+    } catch (error: any) {
+      return new HttpException(error?.statusCode, error?.message);
+    }
   }
 }
 
