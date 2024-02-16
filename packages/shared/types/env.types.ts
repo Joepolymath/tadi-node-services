@@ -12,6 +12,7 @@ export interface IEnv {
   PROXY_PORT: string;
   USER_SERVICE_URL: string;
   NOTIFICATION_SERVICE_URL: string;
+  CHAT_SERVICE_URL: string;
   RABBITMQ_URI: string;
   SENDGRIDAPIKEY: string;
   MAILER_FROM_OPTION: string;

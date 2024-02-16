@@ -31,9 +31,22 @@ const notificationMiddleware = createProxyMiddleware({
     console.log(`Response headers: ${JSON.stringify(proxyRes.headers)}`);
   },
 });
+const chatsMiddleware = createProxyMiddleware({
+  target: Routes.CHAT_SERVICE,
+  changeOrigin: true,
+  onProxyReq: function (ProxyReq, req, res) {
+    logger.info(`Request headers: ${JSON.stringify(ProxyReq.getHeaders())}`);
+  },
+  onProxyRes: function (proxyRes, req, res) {
+    proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+    proxyRes.headers['Access-Control-Allow-Headers'] = '*';
+    logger.info(`Response headers: ${JSON.stringify(proxyRes.headers)}`);
+  },
+});
 
 app.use('/api/v1/users', usersMiddleware);
 app.use('/api/v1/notifications', notificationMiddleware);
+app.use('/api/v1/chats', chatsMiddleware);
 
 app.listen(PROXY_PORT, () => {
   logger.info(`Proxy Started at :${PROXY_PORT}`);
