@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Date, Document } from 'mongoose';
 
 export interface IUser extends Document {
   _id?: string;
@@ -17,6 +17,7 @@ export interface IUser extends Document {
   profilePicture?: string;
   knownIps?: string[];
   flaggedIp: string;
+  lastSeen?: Date;
 }
 export interface IGetUsers {
   _id?: string;

@@ -51,6 +51,9 @@ const userSchema = new mongoose.Schema<IUser>(
     gender: {
       type: String,
     },
+    lastSeen: {
+      type: Date,
+    },
     knownIps: [String],
     flaggedIp: String,
   },
