@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  users:
+    build:
+      context: ./users
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+
+  notifications:
+    build:
+      context: ./notifications
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/notificationsdb
+
+  proxy:
+    build:
+      context: ./proxy
+    ports:
+      - '80:80'
+    depends_on:
+      - users
+      - notifications
+
+  mongodb:
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
+    driver: local
