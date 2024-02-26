@@ -22,6 +22,9 @@ grpc:
 build1:
 	$(PACKAGE_MANAGER) build
 
+dbuild-users:
+	docker build -t user-service-image -f ./packages/usersService/Dockerfile .
+
 run-pm2:
 	pm2 start www
 

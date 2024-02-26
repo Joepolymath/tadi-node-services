@@ -1,0 +1,4 @@
+packages:
+  - './packages/usersService'
+  - './packages/notificationService'
+  - './packages/proxy'

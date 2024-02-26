@@ -1,37 +1,85 @@
 version: '3.8'
 
 services:
-  users:
-    build:
-      context: ./users
+  rabbitmq:
+    image: rabbitmq:3.9.13-management
     ports:
-      - '3000:3000'
-    depends_on:
-      - mongodb
-
-  notifications:
-    build:
-      context: ./notifications
-    depends_on:
-      - mongodb
+      - '5672:5672' # AMQP port
+      - '15672:15672' # RabbitMQ Management UI
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/notificationsdb
-
-  proxy:
-    build:
-      context: ./proxy
-    ports:
-      - '80:80'
-    depends_on:
-      - users
-      - notifications
-
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+    # volumes:
+    #   - rabbitmq_data:/var/lib/rabbitmq
   mongodb:
     image: mongo
     ports:
-      - '27017:27017'
+      - '27018:27017'
     volumes:
       - mongodb_data:/data/db
+
+  proxy:
+    image: proxy-image:latest
+    ports:
+      - '3001:3001'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DB_URI=${DB_URI}
+      - USER_SERVICE_PORT=${USER_SERVICE_PORT}
+      - NOTIFICATION_SERVICE_PORT=${NOTIFICATION_SERVICE_PORT}
+      - PROXY_PORT=${PROXY_PORT}
+      - USER_SERVICE_URL=${USER_SERVICE_URL}
+      - NOTIFICATION_SERVICE_URL=${NOTIFICATION_SERVICE_URL}
+      - CHAT_SERVICE_URL=${CHAT_SERVICE_URL}
+      - BCRYPT_SALT=${BCRYPT_SALT}
+      - JWT_SECRET=${JWT_SECRET}
+      - RABBITMQ_URI=${RABBITMQ_URI}
+      - SENDGRIDAPIKEY=${SENDGRIDAPIKEY}
+      - MAILER_FROM_OPTION=${MAILER_FROM_OPTION}
+      - API_KEY=${API_KEY}
+
+  notifications:
+    image: notification-service-image:latest
+    ports:
+      - '3003:3003'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DB_URI=${DB_URI}
+      - USER_SERVICE_PORT=${USER_SERVICE_PORT}
+      - NOTIFICATION_SERVICE_PORT=${NOTIFICATION_SERVICE_PORT}
+      - PROXY_PORT=${PROXY_PORT}
+      - USER_SERVICE_URL=${USER_SERVICE_URL}
+      - NOTIFICATION_SERVICE_URL=${NOTIFICATION_SERVICE_URL}
+      - CHAT_SERVICE_URL=${CHAT_SERVICE_URL}
+      - BCRYPT_SALT=${BCRYPT_SALT}
+      - JWT_SECRET=${JWT_SECRET}
+      - RABBITMQ_URI=${RABBITMQ_URI}
+      - SENDGRIDAPIKEY=${SENDGRIDAPIKEY}
+      - MAILER_FROM_OPTION=${MAILER_FROM_OPTION}
+      - API_KEY=${API_KEY}
+
+  users:
+    image: user-service-image:latest
+    ports:
+      - '3002:3002'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DB_URI=${DB_URI}
+      - USER_SERVICE_PORT=${USER_SERVICE_PORT}
+      - NOTIFICATION_SERVICE_PORT=${NOTIFICATION_SERVICE_PORT}
+      - PROXY_PORT=${PROXY_PORT}
+      - USER_SERVICE_URL=${USER_SERVICE_URL}
+      - NOTIFICATION_SERVICE_URL=${NOTIFICATION_SERVICE_URL}
+      - CHAT_SERVICE_URL=${CHAT_SERVICE_URL}
+      - BCRYPT_SALT=${BCRYPT_SALT}
+      - JWT_SECRET=${JWT_SECRET}
+      - RABBITMQ_URI=${RABBITMQ_URI}
+      - SENDGRIDAPIKEY=${SENDGRIDAPIKEY}
+      - MAILER_FROM_OPTION=${MAILER_FROM_OPTION}
+      - API_KEY=${API_KEY}
+    depends_on:
+      - rabbitmq
+      - mongodb
 
 volumes:
   mongodb_data:

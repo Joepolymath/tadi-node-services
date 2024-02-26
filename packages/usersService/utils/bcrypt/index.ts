@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 class Bcrypt {
   public async generateSalt(saltRounds: number) {
